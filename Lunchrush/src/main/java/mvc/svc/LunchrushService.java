@@ -1,6 +1,8 @@
-package com.svc;
+package mvc.svc;
 
-import com.domain.Lunchrush;
+import mvc.domain.Lunchrush;
+
+import java.util.List;
 
 /**
  * Project : BoardPractice
@@ -11,6 +13,12 @@ import com.domain.Lunchrush;
  **/
 public interface LunchrushService {
 
+    List<Lunchrush> selectAll();
     Lunchrush selectByNo(Long boardNo);
 
+    void insertBoard(Lunchrush lunchrush);
+
+    Lunchrush updateBoard(Lunchrush lunchrush);
+
+    void deleteBoard(Long boardNo);
 }

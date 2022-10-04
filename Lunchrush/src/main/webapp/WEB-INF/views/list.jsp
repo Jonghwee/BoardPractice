@@ -5,11 +5,20 @@
 
 <!doctype html>
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <head>
     <style type="text/css">
         table {
             border-collapse: collapse;
             border-spacing: 0;
+        }
+        th, td, span{
+            text-align: center;
         }
         section.notice {
             padding: 80px 0;
@@ -31,82 +40,66 @@
             text-align: center;
         }
 
-        .board-table {
+        .table {
             font-size: 13px;
             width: 100%;
             border-top: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
         }
 
-        .board-table a {
+        .table a {
             color: #333;
             display: inline-block;
             line-height: 1.4;
             word-break: break-all;
             vertical-align: middle;
         }
-        .board-table a:hover {
+        .table a:hover {
             text-decoration: underline;
         }
-        .board-table th {
+        .table th {
             text-align: center;
         }
 
-        .board-table .th-num {
+        .table .th-num {
             width: 100px;
             text-align: center;
         }
 
-        .board-table .th-date {
+        .table .th-date {
             width: 200px;
         }
 
-        .board-table th, .board-table td {
+        .table th, .table td {
             padding: 14px 0;
         }
 
-        .board-table tbody td {
+        .table tbody td {
             border-top: 1px solid #e7e7e7;
             text-align: center;
         }
 
-        .board-table tbody th {
+        .table tbody th {
             padding-left: 28px;
             padding-right: 14px;
             border-top: 1px solid #e7e7e7;
             text-align: left;
         }
 
-        .board-table tbody th p{
+        .table tbody th p{
             display: none;
         }
 
-        /* reset */
+        .insertBtn{
+            display: grid;
+            align-items: center;
+            justify-content: right;
+            padding: 10px;
+        }
+        .noContent{
+            align-items: center;
+        }
 
-        * {
-            list-style: none;
-            text-decoration: none;
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-        }
-        .clearfix:after {
-            content: '';
-            display: block;
-            clear: both;
-        }
-        .container {
-            width: 1100px;
-            margin: 0 auto;
-        }
-        .blind {
-            position: absolute;
-            overflow: hidden;
-            clip: rect(0 0 0 0);
-            margin: -1px;
-            width: 1px;
-            height: 1px;
-        }
     </style>
 
 </head>
@@ -122,7 +115,8 @@
         <!-- board list area -->
         <div id="board-list">
             <div class="container">
-                <table class="board-table">
+
+                <table class="table">
                     <thead>
                     <tr>
                         <th scope="col" class="th-num">번호</th>
@@ -133,27 +127,36 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>3</td>
-                        <th>
-                            <a href="#!">[공지사항] 개인정보 처리방침 변경안내처리방침</a>
-                            <p>테스트</p>
-                        </th>
-                        <td>2017.07.13</td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <th><a href="#!">공지사항 안내입니다. 이용해주셔서 감사합니다</a></th>
-                        <td>2017.06.15</td>
-                    </tr>
-
-                    <tr>
-                        <td>1</td>
-                        <th><a href="#!">공지사항 안내입니다. 이용해주셔서 감사합니다</a></th>
-                        <td>2017.06.15</td>
-                    </tr>
+                    <c:choose>
+                        <c:when test="${empty requestScope.list}">
+                            <tr>
+                                <td colspan="5" >
+                                    <span class="noContent">게시물이 없습니다.</span>
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach items="${requestScope.list}" var="lunch">
+                                <tr>
+                                    <td>${lunch.boardNo}</td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/read/${lunch.boardNo}">${lunch.placeName}</a>
+                                        <c:if test="${lunch.image != null}">
+                                            <i class="bi bi-image">
+                                        </c:if>
+                                    </td>
+                                    <td>${lunch.score}</td>
+                                    <td>${lunch.lunchLeader}</td>
+                                    <td>${lunch.date}</td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="insertBtn">
+                        <button id="insertBtn" class="btn btn-outline-success" onclick="location.href='${pageContext.request.contextPath}/write'">등록하기</button>
+                    </div>
                     </tbody>
+
                 </table>
             </div>
         </div>

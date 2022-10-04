@@ -1,6 +1,6 @@
-package com.repo;
+package mvc.repo;
 
-import com.domain.Lunchrush;
+import mvc.domain.Lunchrush;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

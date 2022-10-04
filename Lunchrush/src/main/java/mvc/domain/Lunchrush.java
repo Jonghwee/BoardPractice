@@ -1,8 +1,9 @@
-package com.domain;
+package mvc.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -27,18 +28,17 @@ public class Lunchrush {
     @SequenceGenerator(sequenceName = "board_no_seq", allocationSize = 1, name="board_no_seq")
     private Long boardNo;
 
-    @CreatedDate
-    private LocalDate date;
+    private String date;
 
     private String placeName;
 
     private String address;
 
-    private Integer score;
+    private double score;
 
     private String content;
 
-    private File image;
+    private String image;
 
     private String lunchLeader;
 }
