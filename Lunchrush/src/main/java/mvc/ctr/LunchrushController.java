@@ -24,11 +24,12 @@ import java.util.List;
  **/
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000") //CORS(Cross-Origin Resource Sharing) 정책 위반 방지
 public class LunchrushController {
 
     public final LunchrushService lunchrushService;
 
-    @GetMapping("hello")
+    @GetMapping("/hello")
     public List<String> hello(){
         return Arrays.asList("서버 포트는 8888", "리액트 포트는 3000");
     }
@@ -40,10 +41,10 @@ public class LunchrushController {
      * @Date Time : 2022/09/25 4:15 PM
      * @Summary : 게시물 리스트
      */
-    @GetMapping ("/list")
-    public void list(Model model){
-        List<Lunchrush> list = lunchrushService.selectAll();
-        model.addAttribute("list", list);
+    @RequestMapping("/list")
+    public List<Lunchrush> list(Model model){
+        return lunchrushService.selectAll();
+//        model.addAttribute("board", list);
     }
 
     /**
@@ -67,8 +68,8 @@ public class LunchrushController {
      * @Date Time : 2022/09/25 4:17 PM
      * @Summary : 작성 폼 불러오기
      */
-    @GetMapping("/write")
-    public void writeForm(){}
+//    @GetMapping("/write")
+//    public void writeForm(){}
 
     /**
      *
@@ -81,16 +82,15 @@ public class LunchrushController {
      * @Summary : 게시물 등록하기
      */
     @PostMapping("/insert")
-    public String insertBoard(Lunchrush lunchrush, MultipartFile file) throws IOException {
+    public Lunchrush insertBoard(@RequestBody Lunchrush lunchrush, MultipartFile file) throws IOException {
 
         if(file.getSize()>0){
             File image = new File(ImageLink.LUNCH_IMG + file.getOriginalFilename());
             file.transferTo(image);
             lunchrush.setImage(file.getOriginalFilename());
         }
-        lunchrushService.insertBoard(lunchrush);
 
-        return "redirect:/list";
+        return lunchrushService.insertBoard(lunchrush);
 
     }
 

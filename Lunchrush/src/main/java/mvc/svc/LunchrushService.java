@@ -16,7 +16,7 @@ public interface LunchrushService {
     List<Lunchrush> selectAll();
     Lunchrush selectByNo(Long boardNo);
 
-    void insertBoard(Lunchrush lunchrush);
+    Lunchrush insertBoard(Lunchrush lunchrush);
 
     Lunchrush updateBoard(Lunchrush lunchrush);
 

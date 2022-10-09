@@ -49,8 +49,9 @@ public class LunchrushServiceImpl implements LunchrushService {
      * @Summary : 게시물 등록하기
      */
     @Override
-    public void insertBoard(Lunchrush lunchrush) {
-        lunchrushRepository.save(lunchrush);
+    public Lunchrush insertBoard(Lunchrush lunchrush) {
+
+        return lunchrushRepository.save(lunchrush);
     }
 
     /**
