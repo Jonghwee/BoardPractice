@@ -1,6 +1,7 @@
 package mvc.ctr;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mvc.domain.Lunchrush;
 import mvc.util.ImageLink;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import java.util.List;
  **/
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @CrossOrigin(origins = "http://localhost:3000") //CORS(Cross-Origin Resource Sharing) 정책 위반 방지
 public class LunchrushController {
 
@@ -44,7 +46,6 @@ public class LunchrushController {
     @RequestMapping("/list")
     public List<Lunchrush> list(Model model){
         return lunchrushService.selectAll();
-//        model.addAttribute("board", list);
     }
 
     /**
@@ -84,6 +85,8 @@ public class LunchrushController {
     @PostMapping("/insert")
     public Lunchrush insertBoard(@RequestBody Lunchrush lunchrush, MultipartFile file) throws IOException {
 
+        System.out.println("insertBoard 도착");
+        System.out.println(lunchrush);
         if(file.getSize()>0){
             File image = new File(ImageLink.LUNCH_IMG + file.getOriginalFilename());
             file.transferTo(image);
